@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import FileBase from "react-file-base64";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { createPost } from "../../redux/actions/postsActions";
 
 import useStyles from "./styles";
 
@@ -14,9 +16,24 @@ export default function Form() {
     tags: "",
   });
 
-  const handleSubmit = () => {};
+  const dispatch = useDispatch();
 
-  const handleClear = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    dispatch(createPost(postData));
+
+    handleClear();
+  };
+
+  const handleClear = () => {
+    setPostData({
+      title: "",
+      message: "",
+      selectedFile: "",
+      tags: "",
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
