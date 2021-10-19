@@ -1,4 +1,4 @@
-import { AppBar, Typography } from "@material-ui/core";
+import { AppBar, Box, Typography } from "@material-ui/core";
 import React from "react";
 
 import memoIcon from "../../img/icon-memo64.png";
@@ -8,11 +8,20 @@ export default function Navbar() {
   const classes = useStyles();
 
   return (
-    <AppBar postition="static" color="inherit" className={classes.appBar}>
-      <Typography className={classes.heading} variant="h3">
-        Memo
-      </Typography>
-      <img className={classes.image} src={memoIcon} alt="memo" height="60" />
-    </AppBar>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar className={classes.appBar} position="static" color="inherit">
+        <div className={classes.brandContainer}>
+          <Typography className={classes.heading} variant="h3" align="center">
+            Memo
+          </Typography>
+          <img
+            className={classes.image}
+            src={memoIcon}
+            alt="memo"
+            height="40"
+          />
+        </div>
+      </AppBar>
+    </Box>
   );
 }
