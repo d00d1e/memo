@@ -1,32 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
-import { useDispatch } from "react-redux";
-import { createPost } from "../../redux/actions/postsActions";
+import { TextField, Button, Typography, Paper } from "@material-ui/core";
 
 import useStyles from "./styles";
+import { createPost, updatePost } from "../../redux/actions/postsActions";
 
-export default function Form() {
+export default function Form({ currentId, setCurrentId }) {
   const classes = useStyles();
   const [postData, setPostData] = useState({
-    author: "",
     title: "",
     message: "",
     selectedFile: "",
     tags: "",
   });
 
+  const post = useSelector((state) =>
+    currentId ? state.posts.find((p) => p._id === currentId) : null
+  );
+
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(createPost(postData));
+    if (currentId === null) {
+      dispatch(createPost(postData));
+    } else {
+      dispatch(updatePost(currentId, postData));
+    }
 
     handleClear();
   };
 
   const handleClear = () => {
+    setCurrentId(0);
     setPostData({
       title: "",
       message: "",
@@ -43,7 +55,9 @@ export default function Form() {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">Create a memo</Typography>
+        <Typography variant="h6">
+          {currentId ? "Editing" : "Create"} a memo
+        </Typography>
         <TextField
           name="title"
           variant="outlined"
