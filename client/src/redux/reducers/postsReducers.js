@@ -1,5 +1,6 @@
 import {
   CREATE_POST,
+  DELETE_POST,
   FETCH_POSTS,
   UPDATE_POST,
 } from "../constants/postsConstants";
@@ -14,6 +15,8 @@ export const postsReducer = (posts = {}, action) => {
       return posts.map((post) =>
         post._id === action.payload._id ? action.payload : post
       );
+    case DELETE_POST:
+      return posts.filter((post) => post._id !== action.payload);
     default:
       return posts;
   }

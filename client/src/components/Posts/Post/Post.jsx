@@ -14,10 +14,12 @@ import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
+import { deletePost } from "../../../redux/actions/postsActions";
 import useStyles from "./styles";
 
 export default function Post({ post, setCurrentId }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   return (
     <Card className={classes.card}>
@@ -60,7 +62,11 @@ export default function Post({ post, setCurrentId }) {
         <Button size="small" color="primary">
           <ThumbUpAltIcon fontSize="small" />
         </Button>
-        <Button size="small" color="secondary">
+        <Button
+          size="small"
+          color="secondary"
+          onClick={() => dispatch(deletePost(post._id))}
+        >
           <DeleteIcon fontSize="small" /> &nbsp; Delete
         </Button>
       </CardActions>
