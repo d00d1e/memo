@@ -3,6 +3,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   FETCH_POSTS,
+  LIKE_POST,
   UPDATE_POST,
 } from "../constants/postsConstants";
 
@@ -31,6 +32,16 @@ export const updatePost = (id, post) => async (dispatch) => {
     const { data } = await api.updatePost(id, post);
 
     dispatch({ type: UPDATE_POST, payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const likePost = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.likePost(id);
+
+    dispatch({ type: LIKE_POST, payload: data });
   } catch (error) {
     console.log(error);
   }

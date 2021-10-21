@@ -10,11 +10,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
-import ThumbUpAltOutlined from "@material-ui/icons/ThumbUpAltOutlined";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
-import { deletePost } from "../../../redux/actions/postsActions";
+import { deletePost, likePost } from "../../../redux/actions/postsActions";
 import useStyles from "./styles";
 
 export default function Post({ post, setCurrentId }) {
@@ -54,13 +53,17 @@ export default function Post({ post, setCurrentId }) {
         {post.title}
       </Typography>
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body1" color="textSecondary" component="p">
           {post.message}
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary">
-          <ThumbUpAltIcon fontSize="small" />
+        <Button
+          size="small"
+          color="primary"
+          onClick={() => dispatch(likePost(post._id))}
+        >
+          <ThumbUpAltIcon fontSize="small" /> &nbsp;{post.likes}
         </Button>
         <Button
           size="small"
