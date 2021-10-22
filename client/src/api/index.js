@@ -1,6 +1,17 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
+let API;
+
+if (process.env.NODE_ENV === "development") {
+  API = axios.create({ baseURL: "http://localhost:5000" });
+}
+
+if (process.env.NODE_ENV === "production") {
+  API = axios.create({ baseURL: "https://reactjs-memo-app.herokuapp.com" });
+}
+
+// const API = axios.create({ baseURL: "http://localhost:3000" });
+// const API = axios.create({ baseURL: "https://reactjs-memo-app.herokuapp.com" });
 
 // POST API
 export const fetchPosts = () => API.get("/posts");
