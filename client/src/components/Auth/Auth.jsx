@@ -16,20 +16,37 @@ import Input from "./Input";
 import Icon from "./icon";
 
 import { AUTH } from "../../redux/constants/authConstants";
+import { signIn, signUp } from "../../redux/actions/authActions";
 
 import useStyles from "./styles";
 
 export default function Auth() {
   const classes = useStyles();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-
   const dispatch = useDispatch();
   const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  const handleChange = () => {};
+    if (isSignUp) {
+      dispatch(signUp(formData, history));
+    } else {
+      dispatch(signIn(formData, history));
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -108,10 +125,10 @@ export default function Auth() {
             )}
           </Grid>
           <Button
-            type="submit"
-            fullWidth
             variant="contained"
             color="primary"
+            type="submit"
+            fullWidth
             className={classes.submit}
           >
             {isSignUp ? "Sign Up" : "Sign In"}

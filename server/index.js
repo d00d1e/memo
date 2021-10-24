@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import cors from "cors";
 import postRouter from "./router/postRouter.js";
+import userRouter from "./router/userRouter.js";
 
 dotenv.config();
 
@@ -15,8 +16,9 @@ app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-// ROUTES
+// ROUTER
 app.use("/posts", postRouter);
+app.use("/auth", userRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "client", "build")));
