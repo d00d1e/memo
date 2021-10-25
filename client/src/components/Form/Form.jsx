@@ -39,7 +39,7 @@ export default function Form({ user, currentId, setCurrentId }) {
   };
 
   const handleClear = () => {
-    setCurrentId(0);
+    setCurrentId(null);
     setPostData({
       title: "",
       message: "",

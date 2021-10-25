@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { decode } from "jsonwebtoken";
 import { AppBar, Avatar, Button, Toolbar, Typography } from "@material-ui/core";
 
 import { LOGOUT } from "../../redux/constants/authConstants";
@@ -26,7 +27,13 @@ export default function Navbar() {
   useEffect(() => {
     const token = user?.token;
 
-    //JWT
+    // check token expiration
+    if (token) {
+      const decodedToken = decode(token);
+
+      if (decodedToken.exp * 1000 < new Date().getTime()) handleLogout();
+    }
+
     setUser(JSON.parse(localStorage.getItem("profile")));
   }, [location, user?.token]);
 
