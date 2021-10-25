@@ -6,10 +6,10 @@ import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { createPost, updatePost } from "../../redux/actions/postsActions";
 
-export default function Form({ currentId, setCurrentId }) {
+export default function Form({ user, currentId, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("profile"));
+
   const [postData, setPostData] = useState({
     title: "",
     message: "",

@@ -11,6 +11,7 @@ import useStyles from "./styles";
 
 export default function Home() {
   const [currentId, setCurrentId] = useState(null);
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -30,10 +31,14 @@ export default function Home() {
           spacing={3}
         >
           <Grid item xs={12} sm={6} md={9}>
-            <Posts setCurrentId={setCurrentId} />
+            <Posts user={user} setCurrentId={setCurrentId} />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Form currentId={currentId} setCurrentId={setCurrentId} />
+            <Form
+              user={user}
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+            />
           </Grid>
         </Grid>
       </Container>
