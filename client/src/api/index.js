@@ -10,6 +10,17 @@ if (process.env.NODE_ENV === "production") {
   API = axios.create({ baseURL: "https://reactjs-memo-app.herokuapp.com" });
 }
 
+// send token to backend middleware
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
+  }
+
+  return req;
+});
+
 // POST API
 export const fetchPosts = () => API.get("/posts");
 export const createPost = (newPost) => API.post("/posts", newPost);

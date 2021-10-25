@@ -19,6 +19,7 @@ import useStyles from "./styles";
 export default function Post({ post, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <Card className={classes.card}>
@@ -29,7 +30,9 @@ export default function Post({ post, setCurrentId }) {
         src={post.title}
       />
       <div className={classes.overlay}>
-        <Typography variant="h6">{post.name}</Typography>
+        <Typography variant="h6" className={classes.author}>
+          {post.author}
+        </Typography>
         <Typography variant="body2">
           {moment(post.createdAt).fromNow()}
         </Typography>
@@ -44,6 +47,7 @@ export default function Post({ post, setCurrentId }) {
           <MoreHorizIcon fontSize="medium" />
         </Button>
       </div>
+
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
           {post.tags.map((tag) => `#${tag} `)}
@@ -63,7 +67,7 @@ export default function Post({ post, setCurrentId }) {
           color="primary"
           onClick={() => dispatch(likePost(post._id))}
         >
-          <ThumbUpAltIcon fontSize="small" /> &nbsp;{post.likes}
+          <ThumbUpAltIcon fontSize="small" /> &nbsp;{post.likes.length}
         </Button>
         <Button
           size="small"

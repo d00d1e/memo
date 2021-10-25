@@ -8,6 +8,8 @@ import { createPost, updatePost } from "../../redux/actions/postsActions";
 
 export default function Form({ currentId, setCurrentId }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
   const [postData, setPostData] = useState({
     title: "",
     message: "",
@@ -19,19 +21,18 @@ export default function Form({ currentId, setCurrentId }) {
     currentId ? state.posts.find((p) => p._id === currentId) : null
   );
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (post) setPostData(post);
-  }, [post]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (currentId === null) {
-      dispatch(createPost(postData));
+      dispatch(createPost({ ...postData, author: user?.profileData?.name }));
     } else {
-      dispatch(updatePost(currentId, postData));
+      dispatch(
+        updatePost(currentId, {
+          ...postData,
+          author: user?.profileData?.name,
+        })
+      );
     }
 
     handleClear();
@@ -46,6 +47,20 @@ export default function Form({ currentId, setCurrentId }) {
       tags: "",
     });
   };
+
+  useEffect(() => {
+    if (post) setPostData(post);
+  }, [post]);
+
+  if (!user?.profileData?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please sign in to create or like a memo
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
