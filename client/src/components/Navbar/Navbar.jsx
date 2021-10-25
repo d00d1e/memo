@@ -51,7 +51,7 @@ export default function Navbar() {
               alt={user?.profileData.name}
               src={user?.profileData.imageUrl}
             >
-              {user?.profileData.name.charAt(0)}
+              {user?.profileData.name.charAt(0).toUpperCase()}
             </Avatar>
             <Typography className={classes.userName} variant="h6">
               {user?.profileData.name}

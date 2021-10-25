@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 // SIGN IN
-export const signin = async (req, res) => {
+export const signIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User doesn't exist" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -20,22 +20,20 @@ export const signin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ result: user, token });
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong..." });
+    res.status(200).json({ profileData: user, token });
+  } catch (err) {
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
 // SIGN UP
-export const signup = async (req, res) => {
-  const { firstName, lastName, email, password, confirmPassword } = req.body;
+export const signUp = async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
 
   try {
     const user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "User already exists" });
 
-    if (password !== confirmPassword)
-      return res.send(400).json({ message: "Passwords do not match" });
+    if (user) return res.status(400).json({ message: "User already exists" });
 
     const newUser = await User.create({
       email,
@@ -45,12 +43,16 @@ export const signup = async (req, res) => {
 
     const token = jwt.sign(
       { email: newUser.email, id: newUser._id },
-      process.env.JWT_TOKEN,
-      { expiresIn: "1h" }
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
     );
 
-    res.status(200).json({ newUser, token });
+    res.status(201).json({ newUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
+
+    console.log(error);
   }
 };

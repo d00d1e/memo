@@ -34,6 +34,7 @@ export default makeStyles((theme) => ({
   userName: {
     display: "flex",
     alignItems: "center",
+    textTransform: "capitalize",
   },
   avatar: {
     color: theme.palette.getContrastText(teal[500]),
