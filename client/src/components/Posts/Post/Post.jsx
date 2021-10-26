@@ -22,7 +22,7 @@ export default function Post({ user, post, setCurrentId }) {
   const dispatch = useDispatch();
 
   const Likes = () => {
-    if (post.likes.length > 0) {
+    if (post?.likes?.length > 0) {
       return post.likes.find(
         (like) =>
           like === (user?.profileData?.googleId || user?.profileData?._id)
@@ -51,7 +51,7 @@ export default function Post({ user, post, setCurrentId }) {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} raised elevation={6}>
       <CardMedia
         className={classes.media}
         image={post.selectedFile}
@@ -82,7 +82,7 @@ export default function Post({ user, post, setCurrentId }) {
 
       <div className={classes.details}>
         <Typography variant="body2" color="textSecondary">
-          {post.tags.map((tag) => `#${tag} `)}
+          {post?.tags?.map((tag) => `#${tag} `)}
         </Typography>
       </div>
       <Typography className={classes.title} variant="h5" gutterBottom>

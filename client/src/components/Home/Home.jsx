@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getPosts } from "../../redux/actions/postsActions";
+import { getPosts, getPostsBySearch } from "../../redux/actions/postsActions";
 import {
   Container,
   Grow,
@@ -28,6 +28,7 @@ export default function Home() {
   const [currentId, setCurrentId] = useState(null);
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState([]);
+
   const user = JSON.parse(localStorage.getItem("profile"));
   const dispatch = useDispatch();
   const history = useHistory();
@@ -38,7 +39,7 @@ export default function Home() {
 
   const handleKeyPress = (e) => {
     if (e.keyCode === 13) {
-      // search post here
+      searchPost();
     }
   };
 
@@ -46,6 +47,18 @@ export default function Home() {
 
   const handleDeleteTag = (tagToDelete) =>
     setTags(tags.filter((tag) => tag !== tagToDelete));
+
+  const searchPost = () => {
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") }));
+
+      history.push(
+        `/posts/search?searchQuery=${search || "none"}&tags=${tags.join(",")}`
+      );
+    } else {
+      history.push("/");
+    }
+  };
 
   useEffect(() => {
     dispatch(getPosts());
@@ -66,7 +79,7 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
             <AppBar
-              className={classes.appBarSearch}
+              className={classes.searchBar}
               position="static"
               color="inherit"
             >
@@ -81,12 +94,15 @@ export default function Home() {
               />
               <ChipInput
                 style={{ margin: "10px 0" }}
-                label="Search tags"
+                label="Search Tags"
                 variant="outlined"
                 value={tags}
                 onAdd={handleAddTag}
                 onDelete={handleDeleteTag}
               />
+              <Button variant="contained" color="primary" onClick={searchPost}>
+                Search
+              </Button>
             </AppBar>
             <Form
               user={user}

@@ -46,7 +46,7 @@ export default function Navbar() {
           className={classes.heading}
           variant="h3"
         >
-          Memo
+          MEMO
         </Typography>
         <img className={classes.image} src={memoIcon} alt="memo" height="40" />
       </div>

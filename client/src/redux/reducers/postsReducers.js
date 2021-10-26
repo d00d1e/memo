@@ -2,6 +2,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   FETCH_POSTS,
+  FETCH_POSTS_BY_SEARCH,
   LIKE_POST,
   UPDATE_POST,
 } from "../constants/postsConstants";
@@ -9,6 +10,8 @@ import {
 export const postsReducer = (posts = {}, action) => {
   switch (action.type) {
     case FETCH_POSTS:
+      return action.payload;
+    case FETCH_POSTS_BY_SEARCH:
       return action.payload;
     case CREATE_POST:
       return [...posts, action.payload];
