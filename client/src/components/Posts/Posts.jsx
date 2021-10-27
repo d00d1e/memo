@@ -8,10 +8,12 @@ import useStyles from "./styles";
 
 export default function Posts({ user, setCurrentId }) {
   const classes = useStyles();
-  const posts = useSelector((state) => state.posts);
+  const { posts } = useSelector((state) => state.posts);
 
-  return !posts.length ? (
-    <CircularProgress />
+  return !posts?.length ? (
+    <Grid container alignItems="center" justifyContent="center">
+      <CircularProgress />
+    </Grid>
   ) : (
     <Grid
       className={classes.container}

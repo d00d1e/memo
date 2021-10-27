@@ -60,10 +60,6 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    dispatch(getPosts());
-  }, [currentId, dispatch]);
-
   return (
     <Grow in>
       <Container maxWidth="xl">
