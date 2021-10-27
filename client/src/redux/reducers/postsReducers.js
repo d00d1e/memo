@@ -1,14 +1,23 @@
 import {
   CREATE_POST,
   DELETE_POST,
+  END_LOADING,
   FETCH_POSTS,
   FETCH_POSTS_BY_SEARCH,
   LIKE_POST,
+  START_LOADING,
   UPDATE_POST,
 } from "../constants/postsConstants";
 
-export const postsReducer = (state = { posts: [] }, action) => {
+export const postsReducer = (
+  state = { posts: [], isLoading: true },
+  action
+) => {
   switch (action.type) {
+    case START_LOADING:
+      return { ...state, isLoading: true };
+    case END_LOADING:
+      return { ...state, isLoading: false };
     case FETCH_POSTS:
       return {
         ...state,

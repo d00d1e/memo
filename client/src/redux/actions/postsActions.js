@@ -2,19 +2,22 @@ import * as api from "../../api";
 import {
   CREATE_POST,
   DELETE_POST,
+  END_LOADING,
   FETCH_POSTS,
   FETCH_POSTS_BY_SEARCH,
   LIKE_POST,
+  START_LOADING,
   UPDATE_POST,
 } from "../constants/postsConstants";
 
 export const getPosts = (page) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.fetchPosts(page);
 
-    console.log(data);
-
     dispatch({ type: FETCH_POSTS, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
   }
@@ -22,12 +25,14 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const {
       data: { data },
     } = await api.fetchPostsBySearch(searchQuery);
 
-    console.log(data);
     dispatch({ type: FETCH_POSTS_BY_SEARCH, payload: data });
+    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
   }
@@ -35,6 +40,8 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 
 export const createPost = (post) => async (dispatch) => {
   try {
+    dispatch({ type: START_LOADING });
+
     const { data } = await api.createPost(post);
 
     dispatch({ type: CREATE_POST, payload: data });

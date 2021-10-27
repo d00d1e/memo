@@ -8,9 +8,11 @@ import useStyles from "./styles";
 
 export default function Posts({ user, setCurrentId }) {
   const classes = useStyles();
-  const { posts } = useSelector((state) => state.posts);
+  const { posts, isLoading } = useSelector((state) => state.posts);
 
-  return !posts?.length ? (
+  if (!posts.length && !isLoading) return "No memos";
+
+  return isLoading ? (
     <Grid container alignItems="center" justifyContent="center">
       <CircularProgress />
     </Grid>
