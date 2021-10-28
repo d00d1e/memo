@@ -36,4 +36,7 @@ export default makeStyles((theme) => ({
       flexDirection: "column",
     },
   },
+  recommendedCard: {
+    padding: 20,
+  },
 }));

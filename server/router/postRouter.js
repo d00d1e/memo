@@ -12,9 +12,10 @@ import { isAuth } from "../middleware/isAuth.js";
 
 const postRouter = express.Router();
 
-postRouter.get("/", getPosts);
-postRouter.get("/:id", getPost);
 postRouter.get("/search", getPostsBySearch);
+postRouter.get("/:id", getPost);
+postRouter.get("/", getPosts);
+
 postRouter.post("/", isAuth, createPost);
 postRouter.patch("/:id", isAuth, updatePost);
 postRouter.patch("/:id/likes", isAuth, likePost);
