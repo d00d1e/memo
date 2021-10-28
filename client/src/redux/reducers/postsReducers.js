@@ -2,6 +2,7 @@ import {
   CREATE_POST,
   DELETE_POST,
   END_LOADING,
+  FETCH_POST,
   FETCH_POSTS,
   FETCH_POSTS_BY_SEARCH,
   LIKE_POST,
@@ -18,6 +19,8 @@ export const postsReducer = (
       return { ...state, isLoading: true };
     case END_LOADING:
       return { ...state, isLoading: false };
+    case FETCH_POST:
+      return { ...state, post: action.payload };
     case FETCH_POSTS:
       return {
         ...state,

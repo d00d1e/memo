@@ -3,12 +3,26 @@ import {
   CREATE_POST,
   DELETE_POST,
   END_LOADING,
+  FETCH_POST,
   FETCH_POSTS,
   FETCH_POSTS_BY_SEARCH,
   LIKE_POST,
   START_LOADING,
   UPDATE_POST,
 } from "../constants/postsConstants";
+
+export const getPost = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: START_LOADING });
+
+    const { data } = await api.fetchPost(id);
+
+    dispatch({ type: FETCH_POST, payload: data });
+    dispatch({ type: END_LOADING });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getPosts = (page) => async (dispatch) => {
   try {

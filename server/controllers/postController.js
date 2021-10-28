@@ -1,7 +1,20 @@
 import mongoose from "mongoose";
 import Post from "../models/postModel.js";
 
-// GET POSTS
+// GET POST
+export const getPost = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const post = await Post.findById(id);
+
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
+// GET POSTS (by page)
 export const getPosts = async (req, res) => {
   const { page } = req.query;
 
@@ -15,13 +28,11 @@ export const getPosts = async (req, res) => {
       .limit(LIMIT)
       .skip(startIndex);
 
-    res
-      .status(200)
-      .json({
-        data: posts,
-        currentPage: Number(page),
-        numberOfPages: Math.ceil(total / LIMIT),
-      });
+    res.status(200).json({
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT),
+    });
   } catch (error) {
     res.status(404).json({ message: error });
   }

@@ -1,8 +1,9 @@
 import express from "express";
 import {
   createPost,
-  getPostsBySearch,
+  getPost,
   getPosts,
+  getPostsBySearch,
   updatePost,
   likePost,
   deletePost,
@@ -12,6 +13,7 @@ import { isAuth } from "../middleware/isAuth.js";
 const postRouter = express.Router();
 
 postRouter.get("/", getPosts);
+postRouter.get("/:id", getPost);
 postRouter.get("/search", getPostsBySearch);
 postRouter.post("/", isAuth, createPost);
 postRouter.patch("/:id", isAuth, updatePost);
