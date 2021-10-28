@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
@@ -9,6 +10,7 @@ import { createPost, updatePost } from "../../redux/actions/postsActions";
 export default function Form({ user, currentId, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [postData, setPostData] = useState({
     title: "",
@@ -25,7 +27,9 @@ export default function Form({ user, currentId, setCurrentId }) {
     e.preventDefault();
 
     if (currentId === null) {
-      dispatch(createPost({ ...postData, author: user?.profileData?.name }));
+      dispatch(
+        createPost({ ...postData, author: user?.profileData?.name }, history)
+      );
     } else {
       dispatch(
         updatePost(currentId, {

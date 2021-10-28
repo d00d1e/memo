@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 export default makeStyles((theme) => ({
   postDetailsContainer: {
     padding: 20,
+    margin: 20,
   },
   media: {
     objectFit: "cover",

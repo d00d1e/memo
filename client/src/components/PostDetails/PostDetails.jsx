@@ -23,7 +23,7 @@ export default function PostDetails() {
 
   useEffect(() => {
     dispatch(getPost(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (post) {
@@ -31,7 +31,7 @@ export default function PostDetails() {
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
     }
-  }, [post]);
+  }, [dispatch, post]);
 
   if (!post) return null;
 
@@ -107,7 +107,7 @@ export default function PostDetails() {
         </div>
       </div>
 
-      {recommendedPosts.length && (
+      {recommendedPosts.length ? (
         <div className={classes.section}>
           <Typography gutterBottom variant="h5">
             You might also like:
@@ -150,7 +150,7 @@ export default function PostDetails() {
             </Grid>
           </Grid>
         </div>
-      )}
+      ) : null}
     </Paper>
   );
 }
