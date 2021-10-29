@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import moment from "moment";
@@ -24,23 +24,24 @@ export default function Post({ user, post, setCurrentId }) {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [likes, setLikes] = useState(post?.likes);
+  const userId = user?.profileData?.googleId || user?.profileData?._id;
+  const hasLikedPost = post?.likes?.find((like) => like === userId);
+
   const Likes = () => {
-    if (post?.likes?.length > 0) {
-      return post.likes.find(
-        (like) =>
-          like === (user?.profileData?.googleId || user?.profileData?._id)
-      ) ? (
+    if (likes.length > 0) {
+      return likes.find((like) => like === userId) ? (
         <>
           <ThumbUpAltIcon fontSize="small" />
           &nbsp;
-          {post.likes.length > 2
-            ? `You and ${post.likes.length - 1} others`
-            : `${post.likes.length} like${post.likes.length > 1 ? "s" : ""}`}
+          {likes.length > 2
+            ? `You and ${likes.length - 1} others`
+            : `${likes.length} like${likes.length > 1 ? "s" : ""}`}
         </>
       ) : (
         <>
           <ThumbUpAltOutlined fontSize="small" />
-          &nbsp;{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}
+          &nbsp;{likes.length} {likes.length === 1 ? "Like" : "Likes"}
         </>
       );
     }
@@ -55,6 +56,17 @@ export default function Post({ user, post, setCurrentId }) {
 
   const openPost = () => {
     history.push(`/posts/${post._id}`);
+  };
+
+  // handle instant likes
+  const handleLikes = async () => {
+    dispatch(likePost(post._id));
+
+    if (hasLikedPost) {
+      setLikes(post.likes.filter((id) => id !== userId));
+    } else {
+      setLikes([...post.likes, userId]);
+    }
   };
 
   return (
@@ -101,7 +113,7 @@ export default function Post({ user, post, setCurrentId }) {
         </Typography>
         <CardContent>
           <Typography variant="body1" color="textSecondary" component="p">
-            {post.message}
+            {post.message.split(" ").splice(0, 5).join(" ")}...
           </Typography>
         </CardContent>
       </ButtonBase>
@@ -111,7 +123,7 @@ export default function Post({ user, post, setCurrentId }) {
           size="small"
           color="primary"
           disabled={!user?.profileData}
-          onClick={() => dispatch(likePost(post._id))}
+          onClick={handleLikes}
         >
           <Likes />
         </Button>
