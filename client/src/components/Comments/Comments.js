@@ -14,30 +14,38 @@ import useStyles from "./styles";
 export default function Comments({ post }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const commentsRef = useRef();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState(post?.comments);
   const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleSubmit = async () => {
-    const userComment = `${user?.profileData.name} : ${comment}`;
+    const userComment = `${(user?.profileData.name)
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")} : ${comment}`;
     const newComments = await dispatch(commentPost(userComment, post._id));
 
     setComments(newComments);
     setComment("");
+
+    // auto scroll
+    commentsRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <Container>
       <div className={classes.commentsOuterContainer}>
-        <Typography gutterBottom variant="h6">
+        <Typography variant="h6" gutterBottom>
           Comments
         </Typography>
         <div className={classes.commentsInnerContainer}>
-          {comments?.map((comment, i) => (
+          {comments?.map((c, i) => (
             <Typography key={i} variant="subtitle1">
-              {comment}
+              <strong>{c.split(": ")[0]}</strong> &nbsp; {c.split(":")[1]}
             </Typography>
           ))}
+          <div ref={commentsRef} />
         </div>
 
         {user?.profileData.name && (
