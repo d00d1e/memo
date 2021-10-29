@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 
 import { getPost, getPostsBySearch } from "../../redux/actions/postsActions";
+import Comments from "../Comments/Comments";
 import useStyles from "./styles";
 
 export default function PostDetails() {
@@ -68,6 +69,9 @@ export default function PostDetails() {
           >
             {post.tags.map((tag) => `#${tag} `)}
           </Typography>
+          <Typography gutterBottom variant="body1" component="p">
+            {post.message}
+          </Typography>
           <Typography variant="h6" style={{ marginTop: 20 }}>
             <b>Memo by</b>:{" "}
             {post.author
@@ -81,19 +85,11 @@ export default function PostDetails() {
           >
             {moment(post.createdAt).fromNow()}
           </Typography>
-          <Typography gutterBottom variant="body1" component="p">
-            {post.message}
-          </Typography>
 
           <Divider style={{ margin: "20px 0" }} />
           <Typography variant="body1">
-            <strong>Realtime Chat - coming soon!</strong>
+            <Comments post={post} />
           </Typography>
-          <Divider style={{ margin: "20px 0" }} />
-          <Typography variant="body1">
-            <strong>Comments - coming soon!</strong>
-          </Typography>
-          <Divider style={{ margin: "20px 0" }} />
         </div>
         <div className={classes.imageSection}>
           <img
@@ -112,7 +108,6 @@ export default function PostDetails() {
           <Typography gutterBottom variant="h5">
             You might also like:
           </Typography>
-          <Divider />
           <Grid container spacing={2} className={classes.recommendedPosts}>
             <Grid item xs={12} sm={6} md={4} lg={3}>
               {recommendedPosts.map(

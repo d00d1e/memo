@@ -1,4 +1,5 @@
 import {
+  COMMENT_POST,
   CREATE_POST,
   DELETE_POST,
   END_LOADING,
@@ -40,6 +41,13 @@ export const postsReducer = (
         ),
       };
     case LIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id ? action.payload : post
+        ),
+      };
+    case COMMENT_POST:
       return {
         ...state,
         posts: state.posts.map((post) =>

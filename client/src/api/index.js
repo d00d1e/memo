@@ -34,6 +34,8 @@ export const createPost = (newPost) => API.post("/posts", newPost);
 export const updatePost = (id, updatedPost) =>
   API.patch(`/posts/${id}`, updatedPost);
 export const likePost = (id) => API.patch(`/posts/${id}/likes`);
+export const commentPost = (comment, id) =>
+  API.post(`/posts/${id}/comments`, { comment });
 export const deletePost = (id) => API.delete(`/posts/${id}`);
 
 // USER API
